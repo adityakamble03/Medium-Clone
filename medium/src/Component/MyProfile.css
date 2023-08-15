@@ -1,0 +1,48 @@
+.author-profile {
+    margin: 20px;
+    padding: 20px;
+    /* border: 1px solid #ccc; */
+  }
+  
+  .author-header {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  
+  .author-tabs button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px 12px;
+    font-size: 16px;
+    color: #333;
+  }
+  
+  .author-tabs button.active {
+    background-color: lightblue;
+  }
+  .author-content textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    resize: vertical;
+  }
+  
+  .author-content button {
+    margin-top: 10px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .author-content button:hover {
+    background-color: #0056b3;
+  }
