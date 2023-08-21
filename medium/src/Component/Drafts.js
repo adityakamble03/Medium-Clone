@@ -5,65 +5,65 @@ import axios from 'axios';
 
 const Draft = () => {
 
-    const [drafts, setDrafts] = useState([]);
-    const jwtToken = localStorage.getItem('jwtToken');
-    const headers = {
-        'authToken': jwtToken,
-    };
-    const [change,setChange]=useState('false');
-    useEffect(() => {
+    // const [drafts, setDrafts] = useState([]);
+    // const jwtToken = localStorage.getItem('jwtToken');
+    // const headers = {
+    //     'authToken': jwtToken,
+    // };
+    // const [change,setChange]=useState('false');
+    // useEffect(() => {
 
-        axios.get('http://127.0.0.1:3000/draft/get/all', { headers })
-            .then((response) => {
-                setDrafts(response.data);
-                console.log(response.data);
-            })
-            .catch((error) => {
-                console.error('Error fetching posts:', error);
+    //     axios.get('http://127.0.0.1:3000/draft/get/all', { headers })
+    //         .then((response) => {
+    //             setDrafts(response.data);
+    //             console.log(response.data);
+    //         })
+    //         .catch((error) => {
+    //             console.error('Error fetching posts:', error);
 
-            });
-    }, [change]);
-    const handleDelete = (postId) => {
+    //         });
+    // }, [change]);
+    // const handleDelete = (postId) => {
         
-        axios.delete(`http://127.0.0.1:3000/delete/posts/${postId}`,{headers})
-            .then((response) => {
-                console.log(response.data);
-            })
-            .catch((error) => {
-                console.error('Error fetching posts:', error);
+    //     axios.delete(`http://127.0.0.1:3000/delete/posts/${postId}`,{headers})
+    //         .then((response) => {
+    //             console.log(response.data);
+    //         })
+    //         .catch((error) => {
+    //             console.error('Error fetching posts:', error);
 
-            });
-            axios.get('http://127.0.0.1:3000/get/myPost', { headers })
-            .then((response) => {
-                setDrafts(response.data);
-                console.log(response.data);
-            })
-            .catch((error) => {
-                console.error('Error fetching posts:', error);
-            });
-    }
+    //         });
+    //         axios.get('http://127.0.0.1:3000/get/myPost', { headers })
+    //         .then((response) => {
+    //             setDrafts(response.data);
+    //             console.log(response.data);
+    //         })
+    //         .catch((error) => {
+    //             console.error('Error fetching posts:', error);
+    //         });
+    // }
+
+    const draftArray = JSON.parse(localStorage.getItem("draft"));
 
     return (
         <div>
             {/* <h2 className='mypost'>Drafts</h2> */}
             
-            {drafts.map((draft) => (
-                <div key={draft.id} className="post">
+            {draftArray.map((draft,index) => (
+                <div key={draft.title} className="post">
                     
                     <div className="post-details">
-                        <h3>{draft.title}</h3>
+                        <h3>Draft no.{index}</h3>
+                        <h3>Title{draft.title}</h3>
                         <p>Topic: {draft.topic}</p>
                         {/* <p>{post.text}</p> */}
-                        <p>Published on: {draft.published_at}</p>
-                        <p>Author: {draft.author}</p>
-                        <Link to={`/post/${draft.id}`}>View Details</Link>
                         <div className="edit-delete-options">
-                            <Link to={`/post/${draft.id}/edit`}>Edit</Link>
-                            <button onClick={() => handleDelete(draft.id)}>Delete</button>
+                            <button>Edit</button>
+                            <button>Delete</button>
                         </div>
                     
                     </div>
-                    <img src={draft.image} alt={draft.title} />
+                    <img src={draft.featured_image} alt={draft.title} />
                 </div>
 
             ))}

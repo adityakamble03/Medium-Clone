@@ -12,7 +12,7 @@ const PostDetail = () => {
   const [post, setPosts] = useState([]);
   const [isLiked, setIsLiked] = useState('false');
   const [isFollow, setIsFollow] = useState('false');
-  const [ isSaved, setIsSaved ] = useState('false');
+  const [ isSaved, setIsSaved ] = useState('true');
   const [isComment,setIsComment]=useState('false');
   const jwtToken = localStorage.getItem('jwtToken');
   var flag=false;
