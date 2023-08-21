@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import './AuthorProfile.css';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+
 const AuthorProfile = () => {
   const { authorId } = useParams();
   const [activeTab, setActiveTab] = useState('home');
@@ -35,14 +36,12 @@ const AuthorProfile = () => {
 
 
 
-
-
-
-
   const handleTabChange = (tab) => {
     setActiveTab(tab);
   };
 
+  
+  
   return (
     <div className="author-profile">
       <div className="author-header">
@@ -67,24 +66,18 @@ const AuthorProfile = () => {
           <div>
           <h2 className='mypost'>My Posts</h2>
           {posts.map((post) => (
-              <div key={post.id} className="post">
-                  
-                  <div className="post-details">
-                      <h3>{post.title}</h3>
-                      <p>Topic: {post.topic}</p>
-                      {/* <p>{post.text}</p> */}
-                      <p>Published on: {post.published_at}</p>
-                      <p>Author: {post.author}</p>
-                      <Link to={`/post/${post.id}`}>View Details</Link>
-                  
-                  </div>
-                  <img src={post.image} alt={post.title} />
+            <div key={post.id} className="post">
+              <div className="post-details">
+                <h3>{post.title}</h3>
+                <p>Topic: {post.topic}</p>
+                {/* <p>{post.text}</p> */}
+                <p>Published on: {post.published_at}</p>
+                <p>Author: {post.author}</p>
+                <Link to={`/post/${post.id}`}>View Details</Link>
+            
               </div>
-
-
-
-
-
+              <img src={post.image} alt={post.title} />
+            </div>
           ))}
       </div>
         ) : (
@@ -93,6 +86,7 @@ const AuthorProfile = () => {
     <h1>Number Of Followers: {authorDetails.followers_count}</h1>
     <h1>Email: {authorDetails.email}</h1>
     <p>{authorDetails.about || 'No Bio Added'}</p>
+    
   </div>
         )}
       </div>

@@ -57,10 +57,15 @@ const EditPost = () => {
         title: title,
         topic: topic,
         text: text,
+        author_id: 1,
         featured_image:imageFile
       };
 
-
+      const revisionHistory = `User edited the blog titled ${title}`;
+      const revisionHistoryArray = JSON.parse(localStorage.getItem("revisionHistory"));
+      revisionHistoryArray.push(revisionHistory);
+      localStorage.setItem("revisionHistory",JSON.stringify(revisionHistoryArray));
+      
     axios.put(`http://127.0.0.1:3000/edit/post/${postId}`, postData,{headers})
       .then((response) => {
         console.log('Post saved!', response.data);

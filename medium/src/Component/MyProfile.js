@@ -53,6 +53,8 @@ const MyProfile = () => {
 
 
   };
+  const revisionHistoryArray = JSON.parse(localStorage.getItem("revisionHistory"));
+
 
   return (
     <div className="author-profile">
@@ -83,9 +85,15 @@ const MyProfile = () => {
           
             <div class="author-section">
     {localStorage.getItem('payment') ? (<h3>Premium member</h3>) : (null)}
-    <h1>Number Of Followers: {authorDetails.followers_count}</h1>
+    <h1>Followers: {authorDetails.followers_count}</h1>
     <h1>Email: {authorDetails.email}</h1>
-    <p>{authorDetails.aboutText || 'No Bio Added'}</p>
+    <p>{aboutText || 'No Bio Added'}</p>
+    <h1>Revision History:-</h1>
+    {revisionHistoryArray.map((revisionHistory) => (
+      <>
+        <p>{revisionHistory}</p>
+      </>
+    ))}
   </div>
 
             <div>

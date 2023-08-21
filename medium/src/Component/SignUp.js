@@ -44,8 +44,8 @@ const SignUp = () => {
       <h2>Sign Up</h2>
       <form className="signup-form" onSubmit={handleSubmit}>
         <div>
-          <label htmlFor="name">Username:</label>
           <input
+            placeholder='Enter your Name'
             type="text"
             id="name"
             name="name"
@@ -55,8 +55,8 @@ const SignUp = () => {
           />
         </div>
         <div>
-          <label htmlFor="email">Email:</label>
           <input
+            placeholder='Enter your Email'
             type="email"
             id="email"
             name="email"
@@ -66,8 +66,8 @@ const SignUp = () => {
           />
         </div>
         <div>
-          <label htmlFor="password">Password:</label>
           <input
+            placeholder='Enter your Password'
             type="password"
             id="password"
             name="password"

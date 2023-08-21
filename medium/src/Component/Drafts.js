@@ -2,11 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import './Draft.css'
 import axios from 'axios';
-import MyPost from './MyPost';
 
 const Draft = () => {
 
-    const [posts, setPosts] = useState([]);
+    const [drafts, setDrafts] = useState([]);
     const jwtToken = localStorage.getItem('jwtToken');
     const headers = {
         'authToken': jwtToken,
@@ -16,7 +15,7 @@ const Draft = () => {
 
         axios.get('http://127.0.0.1:3000/draft/get/all', { headers })
             .then((response) => {
-                setPosts(response.data);
+                setDrafts(response.data);
                 console.log(response.data);
             })
             .catch((error) => {
@@ -36,41 +35,36 @@ const Draft = () => {
             });
             axios.get('http://127.0.0.1:3000/get/myPost', { headers })
             .then((response) => {
-                setPosts(response.data);
+                setDrafts(response.data);
                 console.log(response.data);
             })
             .catch((error) => {
                 console.error('Error fetching posts:', error);
-
             });
     }
 
     return (
         <div>
             {/* <h2 className='mypost'>Drafts</h2> */}
-            <MyPost/>
-            {posts.map((post) => (
-                <div key={post.id} className="post">
+            
+            {drafts.map((draft) => (
+                <div key={draft.id} className="post">
                     
                     <div className="post-details">
-                        <h3>{post.title}</h3>
-                        <p>Topic: {post.topic}</p>
+                        <h3>{draft.title}</h3>
+                        <p>Topic: {draft.topic}</p>
                         {/* <p>{post.text}</p> */}
-                        <p>Published on: {post.published_at}</p>
-                        <p>Author: {post.author}</p>
-                        <Link to={`/post/${post.id}`}>View Details</Link>
+                        <p>Published on: {draft.published_at}</p>
+                        <p>Author: {draft.author}</p>
+                        <Link to={`/post/${draft.id}`}>View Details</Link>
                         <div className="edit-delete-options">
-                            <Link to={`/post/${post.id}/edit`}>Edit</Link>
-                            <button onClick={() => handleDelete(post.id)}>Delete</button>
+                            <Link to={`/post/${draft.id}/edit`}>Edit</Link>
+                            <button onClick={() => handleDelete(draft.id)}>Delete</button>
                         </div>
                     
                     </div>
-                    <img src={post.image} alt={post.title} />
+                    <img src={draft.image} alt={draft.title} />
                 </div>
-
-
-
-
 
             ))}
         </div>

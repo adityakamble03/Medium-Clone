@@ -2,8 +2,10 @@ import React, { useState,useEffect } from 'react';
 import axios from 'axios'; // Import Axios for API calls
 import './AddPost.css';
 import { useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 const AddPost = () => {
+  const { authorId } = useParams();
   const navigate = useNavigate();
   const [title, setTitle] = useState('');
   const [topic, setTopic] = useState('');
@@ -42,10 +44,14 @@ const AddPost = () => {
         title: title,
         topic: topic,
         text: text,
-        author_id:1,
+        author_id:authorId,
         featured_image:imageFile
       };
 
+    const revisionHistory = `User created the blog titled ${title}`;
+    const revisionHistoryArray = JSON.parse(localStorage.getItem("revisionHistory"));
+    revisionHistoryArray.push(revisionHistory);
+    localStorage.setItem("revisionHistory",JSON.stringify(revisionHistoryArray));
 
     axios.post('http://127.0.0.1:3000/create/post', postData,{headers})
       .then((response) => {
@@ -63,7 +69,7 @@ const AddPost = () => {
         title: title,
         topic: topic,
         text: text,
-        author_id:1,
+        author_id:authorId,
         featured_image:imageFile
       };
 

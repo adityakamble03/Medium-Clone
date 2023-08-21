@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 
 const PostDetail = () => {
   const { postId } = useParams();
+  const navigate = useNavigate();
   const [comments, setComments] = useState([]);
   const [post, setPosts] = useState([]);
   const [isLiked, setIsLiked] = useState('false');
@@ -100,6 +101,11 @@ const PostDetail = () => {
     axios.delete(`http://127.0.0.1:3000/like/remove/${postId}`,{headers})
       .then((response) => {
         setIsLiked(false);
+        const revisionHistory = `User removed the like on ${postId}`;
+        const revisionHistoryArray = JSON.parse(localStorage.getItem("revisionHistory"));
+        revisionHistoryArray.push(revisionHistory);
+        localStorage.setItem("revisionHistory",JSON.stringify(revisionHistoryArray));
+        console.log(response.data);
         console.log(response.data);
       })
       .catch((error) => {
@@ -111,6 +117,11 @@ const PostDetail = () => {
     axios.post(`http://127.0.0.1:3000/like/create/${postId}`,{},{headers})
       .then((response) => {
         setIsLiked(true);
+        const revisionHistory = `User liked post number ${postId}`;
+        const revisionHistoryArray = JSON.parse(localStorage.getItem("revisionHistory"));
+        revisionHistoryArray.push(revisionHistory);
+        localStorage.setItem("revisionHistory",JSON.stringify(revisionHistoryArray));
+        console.log(response.data);
         console.log(response.data);
       })
       .catch((error) => {
@@ -141,6 +152,11 @@ const PostDetail = () => {
         .then((response) => {
           console.log("commented");
           // setComments(response.data);
+          const revisionHistory = `User commented on post number${postId}`;
+          const revisionHistoryArray = JSON.parse(localStorage.getItem("revisionHistory"));
+          revisionHistoryArray.push(revisionHistory);
+          localStorage.setItem("revisionHistory",JSON.stringify(revisionHistoryArray));
+          console.log(response.data);
           setIsComment(true);
           flag=true;
           console.log(response.data);
@@ -160,8 +176,6 @@ const PostDetail = () => {
 
         });
 
-
-
     }
 
   };
@@ -170,6 +184,10 @@ const PostDetail = () => {
     axios.post(`http://127.0.0.1:3000/author/follow/${post.author_id}`,{},{headers})
       .then((response) => {
         setIsFollow((prev)=>!prev);
+        const revisionHistory = `User followed author ${post.author_id}`;
+        const revisionHistoryArray = JSON.parse(localStorage.getItem("revisionHistory"));
+        revisionHistoryArray.push(revisionHistory);
+        localStorage.setItem("revisionHistory",JSON.stringify(revisionHistoryArray));
         console.log(response.data);
       })
       .catch((error) => {
@@ -185,8 +203,13 @@ const PostDetail = () => {
   const handleSavePost = () => {
     axios.post(`http://127.0.0.1:3000/author/saveForLater/${postId}`, {}, { headers })
       .then((response) => {
+        
+        setIsSaved(true);
+        const revisionHistory = `User saved the post ${postId}`;
+        const revisionHistoryArray = JSON.parse(localStorage.getItem("revisionHistory"));
+        revisionHistoryArray.push(revisionHistory);
+        localStorage.setItem("revisionHistory",JSON.stringify(revisionHistoryArray));
         console.log(response.data);
-        setIsSaved(false);
       })
       .catch((error) => {
         console.log('cannot put there');
@@ -195,6 +218,43 @@ const PostDetail = () => {
       });
 
   }
+  function calculateReadingTime(text, wordsPerMinute = 200) {
+    if (typeof text !== 'string' || text === null) {
+      // Handle the case where text is not a string or is null
+      return 0; // Return 0 reading time
+    }
+    const words = text.split(' ').filter(word => word !== ''); // Split text into words
+    const wordCount = words.length;
+    const minutes = wordCount / wordsPerMinute; // Calculate reading time in minutes
+    const readingTime = Math.ceil(minutes); // Round up to the nearest minute
+    return readingTime;
+  }
+  
+  
+  const readingTime = calculateReadingTime(post.text);
+  
+  function handlePlaylistOne() {
+    axios.post(`http://127.0.0.1:3000/playlists/add/post?playlist_id=1&post_id=${postId}`,{}, {headers})
+      .then((response) => {
+        console.log('Post saved')
+      })
+      .catch((error) => {
+        console.error('error posting post to playlist',error);
+      });
+      navigate('/');
+  }
+
+  function handlePlaylistTwo() {
+    axios.post(`http://127.0.0.1:3000/playlists/add/post?playlist_id=2&post_id=${postId}`,{}, {headers})
+      .then((response) => {
+        console.log('Post saved to playlist')
+      })
+      .catch((error) => {
+        console.error('error posting post to playlist',error);
+      });
+      navigate('/');
+  }
+  
   return (
     <div className="post-details-container">
 
@@ -210,7 +270,7 @@ const PostDetail = () => {
           </div>
           <div className='bottom-container'>
             <p className='published-at'>{formattedDate}</p>
-            <p  >5 Minutes Read</p>
+            <p  >{readingTime} Minutes Read</p>
             <i onClick={openCommentPopup} class="fa fa-comment"></i>
             
             <p>{post.comments_count}</p> 
@@ -220,7 +280,8 @@ const PostDetail = () => {
             {
               isSaved ?  <i onClick={handleSavePost} class="bi bi-bookmark"></i>:<i class="bi bi-bookmark-fill"></i> 
             }
-
+            <button onClick={handlePlaylistOne} className='playlist-button'>Add to Playlist 1</button>
+            <button onClick={handlePlaylistTwo} className='playlist-button'>Add to Playlist 2</button>
           </div>
         </div>
         {showCommentPopup && (
@@ -247,8 +308,6 @@ const PostDetail = () => {
             </ul>
           </div>
         )}
-
-
 
         <img src={post.image} alt={post.title} />
 

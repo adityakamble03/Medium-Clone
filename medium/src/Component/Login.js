@@ -23,6 +23,10 @@ const Login = () => {
     try {
       localStorage.clear();
       const response = await axios.post('http://127.0.0.1:3000/author/login', formData);
+      const revisionHistory="User logged in";
+      const revisionHistoryArray = [];
+      revisionHistoryArray.push(revisionHistory);
+      localStorage.setItem("revisionHistory",JSON.stringify(revisionHistoryArray));
       // Assuming the API responds with a success message or user data
       console.log('Sign-up successful:', response.data);
       // Reset the form after successful sign-up
@@ -44,8 +48,9 @@ const Login = () => {
       <h2>Sign In</h2>
       <form className="signup-form" onSubmit={handleSubmit}>
         <div>
-          <label htmlFor="email">Email:</label>
           <input
+            
+            placeholder="Enter your email"
             type="email"
             id="email"
             name="email"
@@ -55,8 +60,8 @@ const Login = () => {
           />
         </div>
         <div>
-          <label htmlFor="password">Password:</label>
           <input
+            placeholder="Enter your password"
             type="password"
             id="password"
             name="password"

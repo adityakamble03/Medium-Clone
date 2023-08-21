@@ -22,10 +22,7 @@ const PostList = ({ filter }) => {
 
       });
 
-
-
-
-    if (filter.author != '') {
+    if (filter.author !== '') {
       console.log(filter.author);
       axios.get(`http://127.0.0.1:3000/get/post/author/${filter.author}`)
         .then((response) => {
@@ -38,7 +35,7 @@ const PostList = ({ filter }) => {
         });
 
     }
-    else if (filter.date != '') {
+    else if (filter.date !== '') {
       console.log('inside 2');
       axios.get(`http://127.0.0.1:3000/get/post/filter/date/${filter.date}`)
         .then((response) => {
@@ -51,7 +48,7 @@ const PostList = ({ filter }) => {
         });
 
     }
-    else if (filter.sortby != '') {
+    else if (filter.sortby !== '') {
       console.log('inside 2');
       axios.get(`http://127.0.0.1:3000/get/post/filter/likesAndComments/${filter.sortby}`)
         .then((response) => {
@@ -65,7 +62,7 @@ const PostList = ({ filter }) => {
 
     }
     // 
-    else if (filter.search != '') {
+    else if (filter.search !== '') {
       axios.get(`http://localhost:3000/posts/search?search=${filter.search}`)
         .then((response) => {
           setPosts(response.data);

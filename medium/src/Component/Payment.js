@@ -5,6 +5,10 @@ const Payment = () => {
     const plans=['₹5/day','₹10/day','₹15/day']
     function handlePayment() {
         localStorage.setItem('payment', 'premium' );
+        const revisionHistory = `User is a premium member now`;
+        const revisionHistoryArray = JSON.parse(localStorage.getItem("revisionHistory"));
+        revisionHistoryArray.push(revisionHistory);
+        localStorage.setItem("revisionHistory",JSON.stringify(revisionHistoryArray));
     }
 
     return (

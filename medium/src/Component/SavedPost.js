@@ -10,9 +10,7 @@ const SavedPost = () => {
     const headers = {
         'authToken': jwtToken,
     };
-    const [change,setChange]=useState('false');
     useEffect(() => {
-
         axios.get('http://127.0.0.1:3000/author/savedPosts', {headers})
             .then((response) => {
                 setPosts(response.data);
@@ -20,9 +18,8 @@ const SavedPost = () => {
             })
             .catch((error) => {
                 console.error('Error fetching posts:', error);
-
             });
-    }, [change]);
+    }, []);
   
 
     return (
@@ -30,24 +27,16 @@ const SavedPost = () => {
             <h2 className='mypost'>Saved Posts</h2>
             {posts.map((post) => (
                 <div key={post.id} className="post">
-                    
                     <div className="post-details">
-                        <h3>{post.title}</h3>
+                        <h3>{post.post_title}</h3>
                         <p>Topic: {post.topic}</p>
                         {/* <p>{post.text}</p> */}
-                        <p>Published on: {post.published_at}</p>
-                        <p>Author: {post.author}</p>
-                        <Link to={`/post/${post.id}`}>View Details</Link>
-                       
-                    
+                        
+                        <p>Author: {post.author_name}</p>
+                        <Link to={`/post/${post.post_id}`}>View Details</Link>
                     </div>
-                    <img src={post.image} alt={post.title} />
+                    <img src={post.featured_image} alt={post.title} />
                 </div>
-
-
-
-
-
             ))}
         </div>
     );
