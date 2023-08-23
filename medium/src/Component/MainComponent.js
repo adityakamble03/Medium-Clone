@@ -46,9 +46,6 @@ const MainComponent = () => {
   };
 
 
-
-
-
   return (
 
     <div className="main-container">
@@ -78,7 +75,7 @@ const MainComponent = () => {
             />
           </div>
           <div className='filter2'>
-          <select value={filters.sortby} onChange={handleFilterChange}>
+          <select name="sortby" value={filters.sortby} onChange={handleFilterChange}>
               <option value=''>Sort By</option>
               <option value="likes">Likes</option>
               <option value="comments">Comments</option>

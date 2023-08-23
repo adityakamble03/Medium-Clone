@@ -98,11 +98,14 @@ const MyProfile = () => {
 
             <div>
             <textarea
+              className='bio-textarea'
               value={aboutText}
               onChange={(e) => setAboutText(e.target.value)}
               placeholder="Update About..."
             />
-            <button onClick={handleAboutSubmit}>Update About</button>
+            <div className='update-button'>
+              <button onClick={handleAboutSubmit}>Update About</button>
+            </div>
           </div>
           </div>
         )}

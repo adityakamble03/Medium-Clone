@@ -5,11 +5,16 @@
 }
 
 .post {
-  border: 1px solid #ccc;
-  padding: 20px;
-  margin: 20px;
   display: flex;
-  justify-content: space-between;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Add the box shadow */
+    padding: 10px;
+    margin-left: 40px;
+    max-width: 680px;
+    align-items: center;
+    justify-content: center;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .post-details {
@@ -29,7 +34,7 @@
   background-color: #2980b9;
 }
 
-textarea
+.draft-textarea
 ,.draft-input {
   width: 100%;
   padding: 8px;
@@ -38,7 +43,7 @@ textarea
   border-radius: 4px;
 }
 
-textarea{
+.draft-textarea{
   resize: vertical;
   height: 150px;
 }

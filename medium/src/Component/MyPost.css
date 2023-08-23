@@ -25,6 +25,10 @@
     margin-left: auto;
     margin-right: auto;
   }
+
+  .create-playlist{
+    text-align: center;
+  }
   
   .post img {
     width: 220px;

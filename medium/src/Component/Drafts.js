@@ -107,6 +107,7 @@ const Draft = () => {
                                 }
                             />
                             <textarea
+                            className='draft-textarea'
                                 value={editedDraft.text}
                                 onChange={(e) =>
                                     setEditedDraft({

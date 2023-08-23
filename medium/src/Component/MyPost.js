@@ -38,12 +38,7 @@ const MyPost = () => {
       });
 	}, [])
 
-	useEffect(() => {
-		axios.get('http://127.0.0.1:3000/playlists/show/playlist/post/1', { headers })
-			.then((response) => {
-
-			})
-	})
+	
   const handleDelete = (postId) => {
     axios.delete(`http://127.0.0.1:3000/delete/posts/${postId}`,{headers})
       .then((response) => {
@@ -78,6 +73,17 @@ const MyPost = () => {
   
     const formattedDate = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
 
+    function handlePlaylist() {
+      const nameData = "Playlist " + (playlists.length + 1);
+      const playlistdata ={name: nameData};
+      axios.post('http://127.0.0.1:3000/playlists/create',playlistdata,{headers})
+        .then((response) => {
+          console.log(response);
+        })
+        .catch((error) => {
+          console.error("error",error);
+        })
+    }
 
   return (
     <>
@@ -110,6 +116,10 @@ const MyPost = () => {
 						<MyPlaylist playlistId={playlist.id} />
 					</div>
 				))}
+        <div className='create-playlist'>
+        <button onClick={handlePlaylist}>Create Playlist</button>
+        </div>
+        
       </div>
     </>   
   );

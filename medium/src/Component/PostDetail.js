@@ -14,13 +14,23 @@ const PostDetail = () => {
   const [isFollow, setIsFollow] = useState('false');
   const [ isSaved, setIsSaved ] = useState('true');
   const [isComment,setIsComment]=useState('false');
+  const [playlists, setPlaylists] = useState([]);
   const jwtToken = localStorage.getItem('jwtToken');
   var flag=false;
   
   const headers = {
     'authToken': jwtToken
   };
-
+  useEffect(() => {
+    axios.get("http://127.0.0.1:3000/playlists/show/all", {headers})
+      .then((response) => {
+        setPlaylists(response.data);
+        console.log(response.data);
+      })
+      .catch((error) => {
+        console.error("error fetching playlists", error);
+      })
+  })
   useEffect(() => {
     async function fetchMainData() {
       try {
@@ -232,28 +242,19 @@ const PostDetail = () => {
   
   
   const readingTime = calculateReadingTime(post.text);
-  
-  function handlePlaylistOne() {
-    axios.post(`http://127.0.0.1:3000/playlists/add/post?playlist_id=1&post_id=${postId}`,{}, {headers})
-      .then((response) => {
-        console.log('Post saved')
-      })
-      .catch((error) => {
-        console.error('error posting post to playlist',error);
-      });
-      navigate('/');
-  }
 
-  function handlePlaylistTwo() {
-    axios.post(`http://127.0.0.1:3000/playlists/add/post?playlist_id=2&post_id=${postId}`,{}, {headers})
-      .then((response) => {
-        console.log('Post saved to playlist')
-      })
-      .catch((error) => {
-        console.error('error posting post to playlist',error);
-      });
-      navigate('/');
+  const handlePlaylist = (e) => {
+    const value = e.target.value;
+    axios.post(`http://127.0.0.1:3000/playlists/add/post?playlist_id=${value}&post_id=${postId}`,{}, {headers})
+    .then((response) => {
+      console.log('Post saved to playlist')
+    })
+    .catch((error) => {
+      console.error('error posting post to playlist',error);
+    });
+    navigate('/');
   }
+  
   
   return (
     <div className="post-details-container">
@@ -280,8 +281,15 @@ const PostDetail = () => {
             {
               isSaved ?  <i onClick={handleSavePost} class="bi bi-bookmark"></i>:<i class="bi bi-bookmark-fill"></i> 
             }
-            <button onClick={handlePlaylistOne} className='playlist-button'>Add to Playlist 1</button>
-            <button onClick={handlePlaylistTwo} className='playlist-button'>Add to Playlist 2</button>
+            
+            <select name="playlists" onChange={handlePlaylist}>
+              <option value=''>Select Playlist</option>
+              {playlists.map((playlist) => (
+                <option key={playlist.id} value={playlist.id}>
+                  {playlist.name}
+                </option>
+              ))}
+            </select>
           </div>
         </div>
         {showCommentPopup && (

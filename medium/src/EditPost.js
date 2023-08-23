@@ -60,6 +60,9 @@ const EditPost = () => {
         featured_image:imageFile
       };
 
+      const editUrl = `http://127.0.0.1:3000/edit/post/${postId}`;
+      console.log('Edit URL:', editUrl);
+      console.log('Post Data:', postData);
       
       
     axios.put(`http://127.0.0.1:3000/edit/post/${postId}`, postData,{headers})
@@ -73,8 +76,7 @@ const EditPost = () => {
       .catch((error) => {
         if (error.response) {
           console.error('Error response:', error.response);
-          console.error('Status code:', error.response.status);
-          console.error('Response data:', error.response.data);
+          
         } else {
           console.error('Error:', error.message);
         }
