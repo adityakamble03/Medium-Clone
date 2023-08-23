@@ -1,0 +1,98 @@
+.main-container {
+  display: flex;
+  flex-wrap: nowrap;
+}
+
+.left-container,
+.right-container {
+  padding: 20px;
+  box-sizing: border-box;
+  margin-left: 50px;
+}
+.right-container{
+  
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+
+}
+
+  .filters-search {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+
+  .filters-search {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  
+  .filters-search input,
+  .filters-search select {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    min-width: 200px;
+    margin-left: 20px;
+  }
+ 
+  
+  .filters-search select {
+    min-width: 200px;
+  }
+  .filter-item {
+    flex-basis: calc(50% - 5px); /* Set each filter to take 50% of the container width minus gap */
+  }
+ 
+  .search-bar {
+    width: 50%; /* Set the desired width for the search bar */
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    min-width: 400px
+  }
+  .search{
+    margin-left: 70px;
+    margin-right: auto;
+
+  }
+
+  .right-container {
+    display: flex;
+  }
+  
+  .filter2 {
+    flex: 1;
+
+  }
+
+  .recommend-topics{
+    display: flex;
+    font-size: 20px;
+    font-weight: 700;
+    margin-top: 20px;
+  }
+
+  .topic-list{
+    list-style: none;
+  }
+
+  .topic{
+    font-size: 16px;
+    border: 1px solid;
+    border-radius: 3px;
+    margin-bottom: 5px;
+    text-align: center;
+    font-weight: 600;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Add the box shadow */
+    width: 400px;
+  }
