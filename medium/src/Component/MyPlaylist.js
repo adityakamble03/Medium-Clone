@@ -22,6 +22,17 @@ export default function MyPlaylist({ playlistId }) {
       })
   }, []);
 
+  const dateObj = new Date();
+
+
+  const year = dateObj.getFullYear();
+  const month = dateObj.getMonth() + 1;
+  const day = dateObj.getDate();
+  const [showCommentPopup, setShowCommentPopup] = useState(false);
+  const [newComment, setNewComment] = useState('');
+
+
+  const formattedDate = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
   return (
     <>
       {posts.map((post) => (
@@ -30,7 +41,7 @@ export default function MyPlaylist({ playlistId }) {
             <h3>{post.title}</h3>
             <p>Topic: {post.topic}</p>
             {/* <p>{post.text}</p> */}
-            <p>Published on: {post.published_at}</p>
+            <p>Published on: {formattedDate}</p>
 
             <p>Author: {post.author_name}</p>
             <Link to={`/post/${post.id}`}>View Details</Link>

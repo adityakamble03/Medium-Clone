@@ -35,7 +35,12 @@ const Navbar = () => {
         <div className="menu">
           <a href="/">Home</a>
           <a href="/add">Write</a>
-          <a href="/signup">Register</a>
+          {isLoggedIn ? (
+            null
+          ) : (
+            <a href="/signup">Register</a>
+          )}
+          
           {isLoggedIn ? (
             <a onClick={handleLogout}>Logout</a>
           ) : (

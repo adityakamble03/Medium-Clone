@@ -1,7 +1,7 @@
 import React, { useState,useEffect } from 'react';
 import axios from 'axios'; // Import Axios for API calls
 import './AddPost.css';
-import { json, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 
 const AddPost = () => {
@@ -69,13 +69,11 @@ const AddPost = () => {
         title: title,
         topic: topic,
         text: text,
-        featured_image:imageFile
+        featured_image:imageFile,
       };
-    
-    const draftArray = [];
-    draftArray.push(postData);
-    
 
+      const draftArray = [];
+      draftArray.push(postData);
     // axios.post('http://127.0.0.1:3000/draft/create', postData,{headers})
     //   .then((response) => {
     //     console.log('Post saved!', response.data);
@@ -84,9 +82,8 @@ const AddPost = () => {
     //     console.error('Error saving post:', error);
     //     // Implement error handling logic here
     //   });
-
     localStorage.setItem("draft",JSON.stringify(draftArray));
-    navigate('/');
+      navigate('/');
   };
 
 

@@ -59,7 +59,7 @@ const MyProfile = () => {
   return (
     <div className="author-profile">
       <div className="author-header">
-        <h2>Author Name</h2>
+        <h2>Author Name:- {authorDetails.name}</h2>
         <div className="author-tabs">
           <button
             className={activeTab === 'home' ? 'active' : ''}

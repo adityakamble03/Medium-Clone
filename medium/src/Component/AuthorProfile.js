@@ -45,7 +45,7 @@ const AuthorProfile = () => {
   return (
     <div className="author-profile">
       <div className="author-header">
-        <h2>{authorDetails.name}</h2>
+        <h2>Author Name:- {authorDetails.name}</h2>
         <div className="author-tabs">
           <button
             className={activeTab === 'home' ? 'active' : ''}
@@ -64,7 +64,7 @@ const AuthorProfile = () => {
       <div className="author-content">
         {activeTab === 'home' ? (
           <div>
-          <h2 className='mypost'>My Posts</h2>
+          <h2 className='mypost'>Author Posts</h2>
           {posts.map((post) => (
             <div key={post.id} className="post">
               <div className="post-details">

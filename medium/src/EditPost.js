@@ -15,11 +15,11 @@ const EditPost = () => {
   const [text, setText] = useState('');
   const { postId } = useParams();
   const jwtToken = localStorage.getItem('jwtToken');
-   
+  
   const headers = {
     'authToken': jwtToken,
   };
-
+  
   useEffect(() => {
     
     axios.get(`http://127.0.0.1:3000/get/post/${postId}`)
@@ -27,7 +27,7 @@ const EditPost = () => {
         setTitle(response.data.title);
         setTopic(response.data.topic);
         setText(response.data.text);
-        setImageFile(response.data.imageFile);
+        setImageFile(response.data.image);
         console.log(response.data);
       })
       .catch((error) => {
@@ -57,23 +57,29 @@ const EditPost = () => {
         title: title,
         topic: topic,
         text: text,
-        author_id: 1,
         featured_image:imageFile
       };
 
-      const revisionHistory = `User edited the blog titled ${title}`;
-      const revisionHistoryArray = JSON.parse(localStorage.getItem("revisionHistory"));
-      revisionHistoryArray.push(revisionHistory);
-      localStorage.setItem("revisionHistory",JSON.stringify(revisionHistoryArray));
+      
       
     axios.put(`http://127.0.0.1:3000/edit/post/${postId}`, postData,{headers})
       .then((response) => {
         console.log('Post saved!', response.data);
+        const revisionHistory = `User edited the blog titled ${title}`;
+        const revisionHistoryArray = JSON.parse(localStorage.getItem("revisionHistory"));
+        revisionHistoryArray.push(revisionHistory);
+        localStorage.setItem("revisionHistory",JSON.stringify(revisionHistoryArray));
       })
       .catch((error) => {
-        console.error('Error saving post:', error);
-        // Implement error handling logic here
+        if (error.response) {
+          console.error('Error response:', error.response);
+          console.error('Status code:', error.response.status);
+          console.error('Response data:', error.response.data);
+        } else {
+          console.error('Error:', error.message);
+        }
       });
+      
       navigate('/');
   };
 

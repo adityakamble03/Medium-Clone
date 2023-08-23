@@ -83,7 +83,6 @@ const MainComponent = () => {
               <option value="likes">Likes</option>
               <option value="comments">Comments</option>
             </select>
-            
           </div>
 
         </div>
