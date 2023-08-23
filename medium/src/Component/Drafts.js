@@ -1,93 +1,138 @@
 import React, { useState } from 'react';
-import './Draft.css'
-
+import './Draft.css';
+import axios from 'axios';
 
 const Draft = () => {
+    const [drafts, setDrafts] = useState(
+        JSON.parse(localStorage.getItem("draft")) || []
+    );
+    const jwtToken = localStorage.getItem('jwtToken');
+    const headers = {
+        'authToken': jwtToken,
+    };
+    const [editIndex, setEditIndex] = useState(null);
+    const [editedDraft, setEditedDraft] = useState({
+        title: '',
+        topic: '',
+        text: '',
+    });
 
-    let draftArray = [];
-    if(localStorage.getItem("draft") === null){
-        draftArray = [];
-    }
-    else{
-        draftArray = JSON.parse(localStorage.getItem("draft"));
-    }
-    const [drafts,setDrafts] = useState(draftArray);
-    const [isEdit,setIsEdit] = useState(false);
-    const [topic, setTopic] = useState('');
-    // useEffect(() => {
-
-    //     axios.get('http://127.0.0.1:3000/draft/get/all', { headers })
-    //         .then((response) => {
-    //             setDrafts(response.data);
-    //             console.log(response.data);
-    //         })
-    //         .catch((error) => {
-    //             console.error('Error fetching posts:', error);
-
-    //         });
-    // }, [change]);
-    // const handleDelete = (postId) => {
-        
-    //     axios.delete(`http://127.0.0.1:3000/delete/posts/${postId}`,{headers})
-    //         .then((response) => {
-    //             console.log(response.data);
-    //         })
-    //         .catch((error) => {
-    //             console.error('Error fetching posts:', error);
-
-    //         });
-    //         axios.get('http://127.0.0.1:3000/get/myPost', { headers })
-    //         .then((response) => {
-    //             setDrafts(response.data);
-    //             console.log(response.data);
-    //         })
-    //         .catch((error) => {
-    //             console.error('Error fetching posts:', error);
-    //         });
-    // }
-    
-    
     function handleEdit(index) {
-        setIsEdit(true);
+        setEditIndex(index);
+        const draftToEdit = drafts[index];
+        setEditedDraft({
+            title: draftToEdit.title,
+            topic: draftToEdit.topic,
+            text: draftToEdit.text,
+        });
     }
 
     function handleDelete(index) {
-        return setDrafts(drafts.filter((draft) => draft.title !== drafts[index].title));
+        const updatedDrafts = drafts.filter((_, i) => i !== index);
+        setDrafts(updatedDrafts);
+        localStorage.setItem("draft", JSON.stringify(updatedDrafts));
     }
 
-    function handleOnChange(e) {
-        setTopic(e.target.value);
+    function handlePublish(index) {
+        const postData = {
+            title: drafts[index].title,
+            topic: drafts[index].topic,
+            text: drafts[index].text,
+          };
+    
+        const revisionHistory = `User created the blog titled ${drafts[index].title}`;
+        const revisionHistoryArray = JSON.parse(localStorage.getItem("revisionHistory"));
+        revisionHistoryArray.push(revisionHistory);
+        localStorage.setItem("revisionHistory",JSON.stringify(revisionHistoryArray));
+    
+        axios.post('http://127.0.0.1:3000/create/post', postData,{headers})
+          .then((response) => {
+            console.log('Post saved!', response.data);
+          })
+          .catch((error) => {
+            console.error('Error saving post:', error);
+            // Implement error handling logic here
+          });
+            const updatedDrafts = drafts.filter((_, i) => i !== index);
+            setDrafts(updatedDrafts);
+            localStorage.setItem("draft", JSON.stringify(updatedDrafts));
+            
     }
+
+    function handleSave(index) {
+        const updatedDrafts = [...drafts];
+        updatedDrafts[index] = editedDraft;
+        setDrafts(updatedDrafts);
+        localStorage.setItem("draft", JSON.stringify(updatedDrafts));
+        setEditIndex(null);
+    }
+
+    function handleCancelEdit() {
+        setEditIndex(null);
+        setEditedDraft({
+            title: '',
+            topic: '',
+            text: '',
+        });
+    }
+
     return (
         <div>
             <h2 className='mypost'>Drafts</h2>
-            
-            {drafts.map((draft,index) => (
+            {drafts.map((draft, index) => (
                 <div key={draft.title} className="post">
-                    
-                    {isEdit ? 
-                    (<>
+                    {editIndex === index ? (
                         <div className="post-details">
-                            <h3>Draft no.{draft.index}</h3>
-                            <input type="text" value={topic} onChange={handleOnChange}></input>
-
-                        </div>
-                    </>) : 
-                    (<>
-                        <div className="post-details">
-                            <h3>Draft no.{index+1}</h3>
-                            <h3>Title:- {draft.title}</h3>
-                            <p>Topic: {draft.topic}</p>
-                            {/* <p>{post.text}</p> */}
-                            <a href=''>View details</a>
+                            <h3>Edit Draft</h3>
+                            <input
+                                className='draft-input'
+                                type="text"
+                                value={editedDraft.title}
+                                onChange={(e) =>
+                                    setEditedDraft({
+                                        ...editedDraft,
+                                        title: e.target.value,
+                                    })
+                                }
+                            /><br/>
+                            <input
+                                className='draft-input'
+                                type="text"
+                                value={editedDraft.topic}
+                                onChange={(e) =>
+                                    setEditedDraft({
+                                        ...editedDraft,
+                                        topic: e.target.value,
+                                    })
+                                }
+                            />
+                            <textarea
+                                value={editedDraft.text}
+                                onChange={(e) =>
+                                    setEditedDraft({
+                                        ...editedDraft,
+                                        text: e.target.value,
+                                    })
+                                }
+                            />
                             <div className="edit-delete-options">
-                                <button onClick={()=>{handleEdit(index)}}>Edit</button>
-                                <button onClick={()=>{handleDelete(index)}}>Delete</button>
+                                <button onClick={() => handleSave(index)}>Save</button>
+                                <button onClick={() => handleCancelEdit()}>Cancel</button>
                             </div>
                         </div>
-                    </>)}
-                    
-                    <img src={draft.image} alt={draft.title} />
+                    ) : (
+                        <div className="post-details">
+                            <h3>Draft no.{index + 1}</h3>
+                            <h3>Title: {draft.title}</h3>
+                            <p>Topic: {draft.topic}</p>
+                            <p>{draft.text}</p>
+                            <div className="edit-delete-options">
+                                <button onClick={() => handleEdit(index)}>Edit</button>
+                                <button onClick={() => handleDelete(index)}>Delete</button>
+                                <button onClick={() => handlePublish(index)}>Publish</button>
+                            </div>
+                        </div>
+                    )}
                 </div>
             ))}
         </div>
